@@ -1,4 +1,4 @@
-# Test Task
+﻿# Test Task
 ###1. Technologies
 * Java 1.8
 * Spring 4.3.0.RELEASE
@@ -14,7 +14,7 @@ $ cd test_task_20170427
 $ mvn jetty:run
 ```
 
-###3. To Use this project
+###3. To Use this project<br/>
 Access ```http://localhost:8080/addresses``` to see list of addresses log to the db<br/>
 Access ```http://localhost:8080/shipments``` to see list of shipments
 
