@@ -30,6 +30,6 @@ Additional info. You should not change IT, they are correct, you should find err
    ParcelItem.java should have fields: name, quantity, weight, price - all this info just for statistic and shouldn't be used for calculation price of the shipment or something.</br>
    You should implement (change existent) rest endpoint to create Shipment with list of parcels and list of items in each parcel.</br>
    You should fix broken integration tests.</br>
-   You should check your code using checkstyle plugging.</br>
+   You should check your code using checkstyle plugin.</br>
    The data to set up checkstyle is in the resources/checkstyle folder.</br>
    All errors given by checkstyle should be fixed.</br>
