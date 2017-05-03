@@ -23,12 +23,12 @@ Access ```http://localhost:8080/shipments``` to see list of shipments
 Additional info. You should not change IT, they are correct, you should find errors in business logic.
 2. We have Shipment.java class with the fields: weight, length, width, height, declaredPrice, price.
    The task is to create Parcel.java and ParcelItem.java classes.</br>
-   Shipment should have list of parcels and parcel should have list of parcel items.</br>
+   Shipment should have a list of parcels and parcel should have a list of parcel items.</br>
    Shipment fields (weight, length, width, height, declaredPrice, price) should be removed to the class Parcel.java.</br>
    Shipment.price should be equals to the sum of prices of all Parcels in the Shipment.</br>
-   The current shipment price calculation should be moved to the parcel, every parcel in the shipment should be calculated and the sum of parcels prices should be writen to the shipement price.</br>
+   The current shipment price calculation should be moved to the parcel, every parcel in the shipment should be calculated and the sum of parcels prices should be written into the shipement price.</br>
    ParcelItem.java should have fields: name, quantity, weight, price - all this info just for statistic and shouldn't be used for calculation price of the shipment or something.</br>
-   You should implement (change existent) rest endpoint to create Shipment with list of parcels and list of items in each parcel.</br>
+   You should implement (change existent) rest endpoint to create Shipment with the list of parcels and list of items in each parcel.</br>
    You should fix broken integration tests.</br>
    You should check your code using checkstyle plugin.</br>
    The data to set up checkstyle is in the resources/checkstyle folder.</br>
