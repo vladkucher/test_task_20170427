@@ -252,5 +252,10 @@
       <property name="allowClassImports" value="false"/>
       <property name="allowStaticMemberImports" value="false"/>
     </module>
+    <module name="EmptyLineSeparator">
+      <property name="allowMultipleEmptyLinesInsideClassMembers" value="false"/>
+      <property name="allowMultipleEmptyLines" value="false"/>
+      <property name="allowNoEmptyLineBetweenFields" value="true"/>
+    </module>
   </module>
 </module>
