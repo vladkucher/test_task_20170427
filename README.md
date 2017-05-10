@@ -19,7 +19,7 @@ Access ```http://localhost:8080/addresses``` to see list of addresses log to the
 Access ```http://localhost:8080/shipments``` to see list of shipments
 
 ###4. Task To Be Done</br>
-Prerequisits:</br>
+Prerequisites:</br>
  - all tasks should be done independently in your own repository in the separate branch
  - finished work should include pool request ready to merge to master</br>
  - the link to the pool request should be sent as a result of the work
