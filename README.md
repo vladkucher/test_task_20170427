@@ -18,7 +18,11 @@ $ mvn jetty:run
 Access ```http://localhost:8080/addresses``` to see list of addresses log to the db<br/>
 Access ```http://localhost:8080/shipments``` to see list of shipments
 
-###4. Task To Be Done
+###4. Task To Be Done</br>
+Prerequisits:</br>
+ - all tasks should be done independently in your own repository in the separate branch
+ - finished work should include pool request ready to merge to master</br>
+ - the link to the pool request should be sent as a result of the work
 1. Run integration tests. Fix failed integration tests (IT) if any.</br>
 Additional info. You should not change IT, they are correct, you should find errors in business logic.
 2. We have Shipment.java class with the fields: weight, length, width, height, declaredPrice, price.
