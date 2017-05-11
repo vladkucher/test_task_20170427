@@ -144,7 +144,7 @@ public class ShipmentServiceImpl implements ShipmentService {
         return true;
     }
 
-    private BigDecimal calculatePrice(Shipment shipment) {
+    public BigDecimal calculatePrice(Shipment shipment) {
         log.info("Calculating price for shipment {}", shipment);
 
         Address senderAddress = shipment.getSender().getAddress();
@@ -157,19 +157,31 @@ public class ShipmentServiceImpl implements ShipmentService {
         }
 
         TariffGrid tariffGrid = tariffGridDao.getLast(w2wVariation);
-        if (shipment.getWeight() < tariffGrid.getWeight() &&
-                shipment.getLength() < tariffGrid.getLength()) {
-            tariffGrid = tariffGridDao.getByDimension(shipment.getWeight(), shipment.getLength(), w2wVariation);
-        }
 
-        log.info("TariffGrid for weight {} per length {} and type {}: {}",
-                shipment.getWeight(), shipment.getLength(), w2wVariation, tariffGrid);
+        float price = 0;
 
-        if (tariffGrid == null) {
+        if (shipment.getParcels() == null||shipment.getParcels().isEmpty()) {
             return BigDecimal.ZERO;
         }
 
-        float price = tariffGrid.getPrice() + getSurcharges(shipment);
+        for(int i=0; i<shipment.getParcels().size(); i++) {
+            if (shipment.getParcels().get(i).getWeight() < tariffGrid.getWeight() &&
+                    shipment.getParcels().get(i).getLength() < tariffGrid.getLength()) {
+                tariffGrid = tariffGridDao.getByDimension(shipment.getParcels().get(i).getWeight(),
+                        shipment.getParcels().get(i).getLength(), w2wVariation);
+            }
+
+            log.info("TariffGrid for weight {} per length {} and type {}: {}",
+                    shipment.getParcels().get(i).getWeight(), shipment.getParcels().get(i).getLength(), w2wVariation, tariffGrid);
+
+            if (tariffGrid == null) {
+                return BigDecimal.ZERO;
+            }
+
+            price += tariffGrid.getPrice()+shipment.getParcels().get(i).getPrice();
+        }
+
+        price+= getSurcharges(shipment);
 
         return new BigDecimal(Float.toString(price));
     }

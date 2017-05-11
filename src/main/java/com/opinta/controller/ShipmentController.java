@@ -2,8 +2,12 @@ package com.opinta.controller;
 
 import java.util.List;
 
+import com.opinta.dto.ParcelDto;
 import com.opinta.dto.ShipmentDto;
+import com.opinta.entity.ParcelItem;
 import com.opinta.service.PDFGeneratorService;
+import com.opinta.service.ParcelItemService;
+import com.opinta.service.ParcelService;
 import com.opinta.service.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,11 +33,15 @@ import static org.springframework.http.HttpStatus.OK;
 public class ShipmentController {
     private ShipmentService shipmentService;
     private PDFGeneratorService pdfGeneratorService;
+    private ParcelService parcelService;
+    private ParcelItemService parcelItemService;
 
     @Autowired
-    public ShipmentController(ShipmentService shipmentService, PDFGeneratorService pdfGeneratorService) {
+    public ShipmentController(ShipmentService shipmentService, PDFGeneratorService pdfGeneratorService, ParcelService parcelService, ParcelItemService parcelItemService) {
         this.shipmentService = shipmentService;
         this.pdfGeneratorService = pdfGeneratorService;
+        this.parcelService = parcelService;
+        this.parcelItemService = parcelItemService;
     }
 
     @GetMapping
@@ -95,4 +103,95 @@ public class ShipmentController {
         }
         return new ResponseEntity<>(OK);
     }
+
+    @GetMapping("{shipmentId}/parcels")
+    public ResponseEntity<?> getParcels(@PathVariable long shipmentId) {
+        List<ParcelDto> parcelDtos = parcelService.getAll(shipmentId);
+        if(parcelDtos==null){
+            return new ResponseEntity<>(format("Shipment %d doesn't exist", shipmentId), NOT_FOUND);
+        }
+        return new ResponseEntity<>(parcelDtos,OK);
+    }
+
+    @GetMapping("parcels/{id}")
+    public ResponseEntity<?> getParcel(@PathVariable long id){
+        ParcelDto parcelDto = parcelService.getById(id);
+        if(parcelDto==null){
+            return new ResponseEntity<>(format("No parcel found for ID %d", id), NOT_FOUND);
+        }
+        return new ResponseEntity<>(parcelDto,OK);
+    }
+
+    @PostMapping("{shipmentId}/parcels")
+    @ResponseStatus(OK)
+    public ResponseEntity<?> createParcel(@PathVariable long shipmentId, @RequestBody ParcelDto parcelDto){
+        parcelDto = parcelService.save(shipmentId,parcelDto);
+        if(parcelDto==null){
+            return new ResponseEntity<>(format("Shipment %d doesn't exist", shipmentId), NOT_FOUND);
+        }
+        return new ResponseEntity<>(parcelDto,OK);
+    }
+
+    @PutMapping("{shipmentId}/parcels/{id}")
+    public ResponseEntity<?> updateParcel(@PathVariable long shipmentId, @PathVariable long id, @RequestBody ParcelDto parcelDto) {
+        parcelDto = parcelService.update(shipmentId, id, parcelDto);
+        if (parcelDto == null) {
+            return new ResponseEntity<>(format("No Parcel found for ID %d", id), NOT_FOUND);
+        }
+        return new ResponseEntity<>(parcelDto, OK);
+    }
+
+    @DeleteMapping("{shipmentId}/parcels/{id}")
+    public ResponseEntity<?> deleteParcel(@PathVariable long shipmentId, @PathVariable long id) {
+        if (!parcelService.delete(shipmentId, id)) {
+            return new ResponseEntity<>(format("No Parcel found for ID %d", id), NOT_FOUND);
+        }
+        return new ResponseEntity<>(OK);
+    }
+
+    @GetMapping("parcels/{parcelId}/parcelItems")
+    public ResponseEntity<?> getParcelItems(@PathVariable long parcelId){
+        List<ParcelItem> parcelItems = parcelItemService.getAll(parcelId);
+        if(parcelItems==null){
+            return new ResponseEntity<>(format("Parcel %d doesn't exist", parcelId), NOT_FOUND);
+        }
+        return new ResponseEntity<>(parcelItems,OK);
+    }
+
+    @GetMapping("parcels/parcelItems/{id}")
+    public ResponseEntity<?> getParcelItem(@PathVariable long id){
+        ParcelItem parcelItem = parcelItemService.getById(id);
+        if(parcelItem==null){
+            return new ResponseEntity<>(format("No parcelItem found for ID %d", id), NOT_FOUND);
+        }
+        return new ResponseEntity<>(parcelItem,OK);
+    }
+
+    @PostMapping("parcels/{parcelId}/parcelItems")
+    @ResponseStatus(OK)
+    public ResponseEntity<?> createParcelItem(@PathVariable long parcelId, @RequestBody ParcelItem parcelItem){
+        parcelItem = parcelItemService.save(parcelId, parcelItem);
+        if(parcelItem==null){
+            return new ResponseEntity<>(format("Parcel %d doesn't exist", parcelId), NOT_FOUND);
+        }
+        return new ResponseEntity<>(parcelItem,OK);
+    }
+
+    @PutMapping("parcels/parcelItems/{id}")
+    public ResponseEntity<?> updateParcelItem(@PathVariable long id, @RequestBody ParcelItem parcelItem) {
+        parcelItem = parcelItemService.update(id, parcelItem);
+        if (parcelItem == null) {
+            return new ResponseEntity<>(format("No parcelItem found for ID %d", id), NOT_FOUND);
+        }
+        return new ResponseEntity<>(parcelItem, OK);
+    }
+
+    @DeleteMapping("parcels/parcelItems/{id}")
+    public ResponseEntity<?> deleteParcelItem(@PathVariable long id) {
+        if (!parcelItemService.delete(id)) {
+            return new ResponseEntity<>(format("No ParcelItem found for ID %d", id), NOT_FOUND);
+        }
+        return new ResponseEntity<>(OK);
+    }
 }
+
